@@ -49,20 +49,59 @@ const LoadingState: React.FC = () => {
   );
 };
 
-const StyleMeter: React.FC<{ rating: StyleRating }> = ({ rating }) => (
-    <div className="mt-6 p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 animate-fade-in-up" style={{ animationDelay: '500ms' }}>
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center mb-2">
-            <StarIcon className="w-5 h-5 mr-2 text-yellow-400" filled />
-            Style Meter
-        </h3>
-        <div className="flex items-center space-x-1 mb-2">
-            {[...Array(5)].map((_, i) => (
-                <StarIcon key={i} className={`w-6 h-6 ${i < rating.rating ? 'text-yellow-400' : 'text-gray-300'}`} filled={i < rating.rating} />
-            ))}
+const StyleMeter: React.FC<{ rating: StyleRating }> = ({ rating }) => {
+    const [isAnalyzing, setIsAnalyzing] = useState(true);
+    const [revealedStars, setRevealedStars] = useState(0);
+
+    useEffect(() => {
+        setIsAnalyzing(true);
+        setRevealedStars(0);
+
+        const analysisTimer = setTimeout(() => {
+            setIsAnalyzing(false);
+            // Animate stars reveal
+            for (let i = 1; i <= rating.rating; i++) {
+                setTimeout(() => setRevealedStars(i), i * 150);
+            }
+        }, 3500);
+
+        return () => {
+            clearTimeout(analysisTimer);
+        };
+    }, [rating]);
+
+    return (
+        <div className="mt-6 p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 animate-fade-in-up" style={{ animationDelay: '500ms' }}>
+            <h3 className="text-lg font-semibold text-gray-800 flex items-center mb-2">
+                <StarIcon className="w-5 h-5 mr-2 text-yellow-400" filled />
+                Style Meter
+            </h3>
+            {isAnalyzing ? (
+                <div className="space-y-2">
+                    <div className="flex items-center space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                            <StarIcon key={i} className="w-6 h-6 text-gray-300" filled={false} />
+                        ))}
+                    </div>
+                    <div className="relative w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                        <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 animate-analyze-progress"></div>
+                    </div>
+                    <p className="text-sm text-center font-medium text-gray-600">Analyzing your look...</p>
+                </div>
+            ) : (
+                <div className="animate-fade-in-up">
+                    <div className="flex items-center space-x-1 mb-2">
+                        {[...Array(5)].map((_, i) => (
+                            <StarIcon key={i} className={`w-6 h-6 transition-colors duration-300 ${i < revealedStars ? 'text-yellow-400' : 'text-gray-300'}`} filled={i < revealedStars} />
+                        ))}
+                    </div>
+                     <p className="text-md font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">"{rating.title}"</p>
+                    <p className="text-sm text-gray-600 mt-1">{rating.critique}</p>
+                </div>
+            )}
         </div>
-        <p className="text-sm text-gray-600 italic">"{rating.critique}"</p>
-    </div>
-);
+    );
+};
 
 const ShoppingPromptsDisplay: React.FC<{ prompts: ShoppingPrompt[] }> = ({ prompts }) => {
     const [copied, setCopied] = useState<Record<number, boolean>>({});
@@ -112,7 +151,7 @@ const GeneratedImageViewer: React.FC<GeneratedImageViewerProps> = ({ images, isL
     const mimeType = imageUrl.split(';')[0].split(':')[1];
     const extension = mimeType.split('/')[1] || 'png';
     const index = images.findIndex(img => img === imageUrl);
-    link.download = `virtual-try-on-${index + 1}.${extension}`;
+    link.download = `newme-try-on-${index + 1}.${extension}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -184,6 +223,13 @@ const GeneratedImageViewer: React.FC<GeneratedImageViewerProps> = ({ images, isL
         }
         .animate-fade-in-up {
             animation: fade-in-up 0.5s ease-out forwards;
+        }
+        @keyframes analyze-progress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(0%); }
+        }
+        .animate-analyze-progress {
+            animation: analyze-progress 3.5s linear infinite;
         }
       `}</style>
     </div>

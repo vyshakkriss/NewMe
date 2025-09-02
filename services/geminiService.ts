@@ -90,16 +90,22 @@ export const rateOutfitStyle = async (outfit: Outfit): Promise<StyleRating> => {
         type: Type.OBJECT,
         properties: {
             rating: { type: Type.INTEGER, description: "A rating from 1 to 5." },
-            critique: { type: Type.STRING, description: "A brief, honest, and constructive critique of the outfit." }
+            title: { type: Type.STRING, description: "A catchy, one-liner title for the critique (e.g., 'Effortlessly Chic', 'Bold & Daring')." },
+            critique: { type: Type.STRING, description: "A brief, honest, and constructive critique of the outfit (2-3 sentences)." }
         },
-        required: ["rating", "critique"]
+        required: ["rating", "title", "critique"]
     };
-    const prompt = `Critique the following fashion outfit based on the provided descriptions. If an item is described by an image, use your fashion knowledge to critique the overall combination as you imagine it. Be an honest but constructive fashion critic. Provide a rating from 1 to 5 stars (as an integer) and a brief, honest critique (2-3 sentences).
+    const prompt = `Critique the following fashion outfit based on the provided descriptions. If an item is described by an image, use your fashion knowledge to critique the overall combination as you imagine it. Be an honest but constructive fashion critic.
+
+Instructions:
+1.  First, create a short, catchy title for your critique (e.g., "Effortlessly Chic", "A Modern Classic").
+2.  Then, provide a rating from 1 to 5 stars (as an integer).
+3.  Finally, write a brief, honest critique (2-3 sentences).
     
     Outfit:
     ${outfitToText(outfit)}
     
-    Return the response in JSON format.`;
+    Return the response in a single, valid JSON object.`;
 
     const response = await ai.models.generateContent({
         model,

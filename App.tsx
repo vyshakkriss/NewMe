@@ -4,7 +4,7 @@ import { generateStyledImages, generateSurpriseOutfit, rateOutfitStyle, generate
 import ImageUploader from './components/ImageUploader';
 import AccessoryInput from './components/AccessoryInput';
 import GeneratedImageViewer from './components/GeneratedImageViewer';
-import { HeaderIcon, SparklesIcon, MagicWandIcon } from './components/icons';
+import { NewMeLogo, SparklesIcon, MagicWandIcon, AmazonLogo, FlipkartLogo, MeeshoLogo, MyntraLogo } from './components/icons';
 import OutfitItemInput from './components/OutfitItemInput';
 
 const backgroundOptions: { id: BackgroundOption; label: string; imageUrl: string }[] = [
@@ -149,19 +149,19 @@ const App: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <header className="bg-white/90 backdrop-blur-lg sticky top-0 z-20 border-b border-gray-200/80">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <HeaderIcon />
+            <NewMeLogo />
             <h1 className="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400">
-              Virtual Try-On AI
+              NewMe
             </h1>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto p-4 sm:p-6 lg:p-8">
+      <main className="container mx-auto p-4 sm:p-6 lg:p-8 flex-grow">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Input Section */}
           <div className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-lg shadow-gray-200/50 flex flex-col space-y-6 h-fit animate-fade-in-up">
@@ -277,6 +277,28 @@ const App: React.FC = () => {
           </div>
         </div>
       </main>
+      <footer className="bg-white border-t border-gray-200/80 mt-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="text-center mb-6">
+                <h3 className="text-lg font-semibold text-gray-800">Find a similar look on your favorite sites</h3>
+                <p className="text-sm text-gray-500">Use the prompts from "Find This Look" to search on these platforms.</p>
+            </div>
+            <div className="flex justify-center items-center space-x-6 md:space-x-10">
+                <a href="https://www.amazon.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity duration-300">
+                    <AmazonLogo />
+                </a>
+                <a href="https://www.flipkart.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity duration-300">
+                    <FlipkartLogo />
+                </a>
+                <a href="https://www.meesho.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity duration-300">
+                    <MeeshoLogo />
+                </a>
+                <a href="https://www.myntra.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity duration-300">
+                    <MyntraLogo />
+                </a>
+            </div>
+        </div>
+      </footer>
       <style>{`
         @keyframes fade-in-up {
             from { opacity: 0; transform: translateY(20px); }

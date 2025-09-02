@@ -24,6 +24,7 @@ export interface SurpriseOutfitResponse {
 
 export interface StyleRating {
   rating: number; // 1 to 5
+  title: string;
   critique: string;
 }
 
