@@ -1,34 +1,54 @@
-export type InputType = 'text' | 'image' | 'url';
-
-export interface ClothingItem {
-  type: InputType;
-  value: string;
-  base64?: string;
-  mimeType?: string;
-  previewUrl?: string;
+export interface UserImage {
+  file: File | null;
+  base64: string | null;
+  mimeType: string | null;
+  previewUrl: string | null;
 }
 
-export interface Outfit {
-  topWear: ClothingItem;
-  bottomWear: ClothingItem;
-  accessories: ClothingItem[];
+export interface CustomImage {
+  file: File;
+  base64: string;
+  mimeType: string;
+  previewUrl: string;
 }
 
-export type BackgroundOption = 'keep' | 'studio' | 'outdoor_cafe' | 'city_street' | 'beach_sunset';
-
-export interface SurpriseOutfitResponse {
-  topWear: { description: string };
-  bottomWear: { description: string };
-  accessories: { description: string }[];
-}
-
-export interface StyleRating {
-  rating: number; // 1 to 5
-  title: string;
-  critique: string;
+export interface OutfitItemState {
+  id: string;
+  text: string;
+  customImage: CustomImage | null;
+  inspirationUrl: string | null;
 }
 
 export interface ShoppingPrompt {
   itemName: string;
   prompt: string;
+}
+
+export interface GeneratedImage {
+  src: string;
+  base64: string;
+  mimeType: string;
+  shoppingPrompts: ShoppingPrompt[] | null;
+  isLoadingPrompts: boolean;
+}
+
+export interface AppState {
+  userImage: UserImage;
+  topWear: OutfitItemState;
+  bottomWear: OutfitItemState;
+  accessories: OutfitItemState;
+  occasion: string;
+  customOccasionPrompt: string;
+  background: string;
+  customBackgroundPrompt: string;
+  imageCount: number;
+  generatedImages: GeneratedImage[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+export interface InspirationItem {
+    id: string;
+    label: string;
+    imageUrl: string;
 }
